@@ -1,27 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
-import 'package:learing_riverpod/model/user.dart';
+import 'package:learing_riverpod/Provider/counter_provider.dart';
 
-import '../Providers/userNotifier.dart';
+// making instance of the provider
+final counterProvider =
+    ChangeNotifierProvider<CounterProvider>((ref) => CounterProvider());
 
 class HomePage extends ConsumerWidget {
-  TextEditingController textController = TextEditingController();
-
-  onSubmit(WidgetRef ref, String name) {
-    ref.read(userProvider.notifier).updateName(name);
-  }
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.read(userProvider);
+    final countNum = ref.watch(counterProvider).count;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(user.name),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {},
+            child: IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                ref.read(counterProvider).increment();
+              },
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          FloatingActionButton(
+            onPressed: () {},
+            child: IconButton(
+              icon: const Icon(Icons.remove),
+              onPressed: () {
+                ref.read(counterProvider).decrement();
+              },
+            ),
+          ),
+        ],
       ),
-      body: TextField(
-        controller: textController,
-        onSubmitted: (value) => onSubmit(ref, value),
+      body: Center(
+        child: Text(
+          '${countNum}',
+          style: TextStyle(
+            fontSize: 52.0,
+          ),
+        ),
       ),
     );
   }
