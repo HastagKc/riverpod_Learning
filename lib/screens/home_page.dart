@@ -8,7 +8,7 @@ import '../Providers/userNotifier.dart';
 class HomePage extends ConsumerWidget {
   TextEditingController textController = TextEditingController();
 
-  onSubmit(String name, WidgetRef ref) {
+  onSubmit(WidgetRef ref, String name) {
     ref.read(userProvider.notifier).updateName(name);
   }
 
@@ -21,9 +21,7 @@ class HomePage extends ConsumerWidget {
       ),
       body: TextField(
         controller: textController,
-        onSubmitted: (value) {
-          textController.text = '';
-        },
+        onSubmitted: (value) => onSubmit(ref, value),
       ),
     );
   }

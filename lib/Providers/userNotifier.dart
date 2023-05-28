@@ -13,6 +13,7 @@ class UserNotifier extends StateNotifier<User> {
   void updateName(String n) {
     state = state.copyWith(
       name: n,
+      age: state.age,
     );
   }
 }
